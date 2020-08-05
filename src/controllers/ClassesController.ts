@@ -23,7 +23,7 @@ export default class ClassesController {
             })
         }
 
-//        try {
+        try {
             const timeInMinutes = convertHourToMinutes(time)
 
             const classes = await db('classes')
@@ -43,12 +43,12 @@ export default class ClassesController {
 
             return response.json(classes)
 
-    //     } catch (error) {
-    //         console.log('Error', error)
-    //         return response.status(400).json({                
-    //             error: 'There is an error with your request'
-    //         })
-    //     }
+        } catch (error) {
+            console.log('Error', error)
+            return response.status(400).json({                
+                error: 'There is an error with your request'
+            })
+        }
     }
 
     async create(request: Request, response: Response){
