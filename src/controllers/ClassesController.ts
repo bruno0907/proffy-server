@@ -23,22 +23,32 @@ export default class ClassesController {
             })
         }
 
-        const timeInMinutes = convertHourToMinutes(time)
+//        try {
+            const timeInMinutes = convertHourToMinutes(time)
 
-        const classes = await db('classes')
-            .whereExists(function(){
-                this.select('class_schedule.*')
-                    .from('class_schedule')
-                    .whereRaw(' `class_schedule` . `class_id` = `classes` . `id` ')
-                    .whereRaw(' `class_schedule` . `week_day` = ?? ', [ Number(week_day) ])
-                    .whereRaw(' `class_schedule` . `from` <= ?? ', [ timeInMinutes ])
-                    .whereRaw(' `class_schedule` . `from` > ?? ', [ timeInMinutes ])
-            })
-            .where('classes.subject', '=', subject)
-            .join('users', 'classes.user_id', '=', 'users.id')
-            .select(['classes.*', 'users.*'])
+            const classes = await db('classes')
+                .whereExists(function(){
+                    this.select('class_schedule.*')
+                        .from('class_schedule')
+                        .whereRaw(' `class_schedule` . `class_id` = `classes` . `id` ')
+                        .whereRaw(' `class_schedule` . `week_day` = ?? ', [ Number(week_day) ])
+                        .whereRaw(' `class_schedule` . `from` <= ?? ', [ timeInMinutes ])
+                        .whereRaw(' `class_schedule` . `to` > ?? ', [ timeInMinutes ])                        
+                })
+                .where('classes.subject', '=', subject)
+                .join('users', 'classes.user_id', '=', 'users.id')
+                .select(['classes.*', 'users.*'])
 
-        return response.json(classes)
+ 
+
+            return response.json(classes)
+
+    //     } catch (error) {
+    //         console.log('Error', error)
+    //         return response.status(400).json({                
+    //             error: 'There is an error with your request'
+    //         })
+    //     }
     }
 
     async create(request: Request, response: Response){
@@ -85,7 +95,15 @@ export default class ClassesController {
         
             await trx.commit()
         
-            return response.status(201).send()
+            return response.status(201).json({
+                name,
+                avatar,
+                whatsapp,
+                bio,
+                subject,
+                cost,
+                schedule
+            })
         } catch (error) {
             await trx.rollback()
     
