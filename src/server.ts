@@ -11,6 +11,6 @@ app.use(express.json())
 
 app.use(routes)
 
-app.listen(PORT, function(){
+app.listen(PORT, () => {
     console.log(`Server listening ${PORT} port`)
 })
