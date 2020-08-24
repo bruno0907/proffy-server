@@ -30,10 +30,10 @@ export default class ClassesController {
                 .whereExists(function(){
                     this.select('class_schedule.*')
                         .from('class_schedule')
-                        .whereRaw(' `class_schedule` . `class_id` = `classes` . `id` ')
-                        .whereRaw(' `class_schedule` . `week_day` = ?? ', [ Number(week_day) ])
-                        .whereRaw(' `class_schedule` . `from` <= ?? ', [ timeInMinutes ])
-                        .whereRaw(' `class_schedule` . `to` > ?? ', [ timeInMinutes ])                        
+                        .whereRaw('class_schedule . class_id = classes . id')
+                        .whereRaw('class_schedule . week_day = ??', [ Number(week_day) ])
+                        .whereRaw('class_schedule . from <= ??', [ timeInMinutes ])
+                        .whereRaw('class_schedule . to > ??', [ timeInMinutes ])                        
                 })
                 .where('classes.subject', '=', subject)
                 .join('users', 'classes.user_id', '=', 'users.id')
@@ -54,6 +54,8 @@ export default class ClassesController {
     async create(request: Request, response: Response){
         const {
             name,
+            surname,
+            password,
             avatar,
             whatsapp,
             bio,
@@ -67,10 +69,12 @@ export default class ClassesController {
         try {
             const insertedUsersId = await trx('users').insert({
                 name,
+                surname,
+                password,
                 avatar,
                 whatsapp,
                 bio
-            })
+            }).returning('id')
         
             const user_id = insertedUsersId[0]
         
@@ -78,7 +82,7 @@ export default class ClassesController {
                 subject,
                 cost,
                 user_id
-            })
+            }).returning('id')
         
             const class_id = insertedClassesId[0]
         
@@ -97,6 +101,7 @@ export default class ClassesController {
         
             return response.status(201).json({
                 name,
+                surname,
                 avatar,
                 whatsapp,
                 bio,
@@ -108,7 +113,8 @@ export default class ClassesController {
             await trx.rollback()
     
             return response.status(400).json({
-                error: 'Unexpected error while creating new class'
+                message: 'Unexpected error while creating new class',
+                error: error
             })
         }
     }
