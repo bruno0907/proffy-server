@@ -42,7 +42,7 @@ export default class CreateUserService{
       name,
       surname,
       email,
-      hashedPassword
+      password: hashedPassword
     })
 
     if(createUser){
