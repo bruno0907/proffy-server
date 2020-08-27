@@ -13,10 +13,10 @@ const authController = new AuthController()
 const classesController = new ClassesController()
 const connectionsController = new ConnectionsController()
 
-routes.post('/proffy/register', userController.create)
-routes.post('/proffy/login', authController.login)
+routes.post('/proffy/sign-up', userController.create)
+routes.post('/proffy/sign-in', authController.login)
 
-routes.put('/proffy/profile/:id/update', userController.update)
+routes.put('/proffy/profile/update', userController.update)
 routes.post('/proffy/classes', classesController.create)
 routes.get('/classes', classesController.index)
 
