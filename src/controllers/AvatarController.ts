@@ -2,11 +2,6 @@ import { Request, Response } from 'express'
 
 import UpdateAvatarService from '../services/UpdateAvatarService'
 
-interface UpdateAvatarProps{
-  id: number;
-  avatar: string;
-}
-
 export default class AvatarController{
   
   async update(request: Request, response: Response){
@@ -15,21 +10,19 @@ export default class AvatarController{
     const { id } = request.headers
           
     const updateAvatarService = new UpdateAvatarService()
-    const newAvatar = await updateAvatarService.execute({
+    const user = await updateAvatarService.execute({
       id,
       avatar
     })
 
-    if(newAvatar){      
-      return response.status(201).json({ 
-        status: 'ok',
-        newAvatar
-      })
+    if(user){   
+      return response.status(201).json({ user })
+
     } else {    
-      return response.status(400).json({
-        status: 'error',
-        Message: 'An error has ocurried with the controller',              
+      return response.status(400).json({      
+        message: 'An error has ocurried with the controller'           
       })
+
     }  
 
   }

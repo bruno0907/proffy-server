@@ -1,5 +1,10 @@
 import db from '../database/connection'
 
+interface UpdateAvatarProps{
+  id: number;
+  avatar: string;
+}
+
 export default class UpdateAvatarService{
   async execute({
     id,
@@ -10,18 +15,23 @@ export default class UpdateAvatarService{
       throw new Error('Missing id or avatar on request')
     }    
 
-    const user = await db('users')
-      .where({id: id})
+    const user = await db<UpdateAvatarProps>('users')
+      .where({id})
       .first()
       
     if(!user){
-      throw new Error('User not fount')
+      throw new Error('User not found')
     } 
 
-    await db('users')
-      .where({id: id})
-      .update({avatar})
+    await db<UpdateAvatarProps>('users')
+      .where({id})
+      .update({avatar})         
+    
+    const updatedUser = await db<UpdateAvatarProps>('users')
+      .where({id})
+      .first()
+    
+    return updatedUser
 
-      return avatar
     }
 }
