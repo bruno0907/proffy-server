@@ -2,13 +2,13 @@ import db from '../database/connection'
 
 import { hash } from 'bcryptjs'
 
-interface ICreateUser{
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-  password_confirm: string;
-}
+// interface ICreateUser{
+//   name: string;
+//   surname: string;
+//   email: string;
+//   password: string;
+//   password_confirm: string;
+// }
 
 export default class CreateUserService{
 

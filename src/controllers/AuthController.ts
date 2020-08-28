@@ -1,4 +1,4 @@
-import { Request, Response, response } from 'express'
+import { Request, Response } from 'express'
 
 import AuthUserService from '../services/AuthUserService'
 
@@ -14,11 +14,14 @@ export default class AuthController{
       const user = {   
         id: userData.id,     
         name: userData.name,
+        surname: userData.surname,
         email: userData.email,        
         password: userData.password,
         avatar: userData.avatar,
         whatsapp: userData.whatsapp,
-        bio: userData.bio,        
+        bio: userData.bio,   
+        // subject: userData.subject,
+        // cost: userData.cost,     
       }
 
       response.status(200).json({user, token})

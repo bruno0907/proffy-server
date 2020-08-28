@@ -5,7 +5,7 @@ import UpdateUserService from '../services/UpdateUserService'
 
 export default class UserController {
 
-    public async create(request: Request, response: Response) : Promise<Response>{
+    public async create(request: Request, response: Response){
         try {
           const {
             name,
@@ -28,13 +28,13 @@ export default class UserController {
           return response.status(201).json(user)
         } catch (error) {
           return response.status(400).json({
-            message: 'Something wrong is not right!',
+            message: 'An error has ocurried while creating a new user register',
             error: error.message
           })
         }
     }
 
-    public async update(request: Request, response: Response) : Promise<Response>{
+    public async update(request: Request, response: Response) {
       try {
         
         const { id } = request.params
@@ -58,14 +58,13 @@ export default class UserController {
           bio,
           subject,
           cost
-        })
-        console.log(updatedUser)
+        })        
         return response.status(200).json(updatedUser)
         
       } catch (error) {
 
         return response.status(400).json({
-          message: 'An error has ocurried!',
+          message: 'This register cannot be updated.',
           error: error.message
 
         })

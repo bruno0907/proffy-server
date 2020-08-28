@@ -3,26 +3,35 @@ import db from '../database/connection'
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 
-interface UserAuthData{
+interface UserAuthProps{
   email: string;
   password: string;
 }
 
-interface IResponse{
+interface UserResponseProps{
   userData: {
     id: string;
     name: string;
+    surname: string;
     password: string;
     email: string;
     avatar: string;
     whatsapp: string;
     bio: string;  
+    // subject: string;
+    // cost: string;
+    // classes: Array<{
+    //   subject: string;
+    //   cost: string;
+    //   from: string;
+    //   to: string;      
+    // }>
   };
   token: string;
 }
 
 export default class AuthUserService{
-  public async execute({ email, password }: UserAuthData): Promise<IResponse>{
+  public async execute({ email, password }: UserAuthProps): Promise<UserResponseProps>{
     
     if(!email && !password){
       throw new Error('You must inform your e-mail and/or your password to SignIn')      
@@ -41,7 +50,7 @@ export default class AuthUserService{
       throw new Error('Your email or password is wrong. Please verify your data and try again. If you dont have an account consider SignUp to us')
     }
 
-    const token = sign({}, '31e5e375f621c075f481aec623259356', {
+    const token = sign({}, process.env.SECRET_KEY, {
       subject: userData.email,
       expiresIn: '1d',
     })
