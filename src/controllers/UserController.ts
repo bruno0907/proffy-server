@@ -36,30 +36,46 @@ export default class UserController {
 
     public async update(request: Request, response: Response) {
       try {
-        
-        const { id } = request.params
 
-        const {          
+        const {  
+          id,        
+          avatar,
           name,
           surname,
+          email,
           whatsapp,          
           bio,
           subject,
-          cost,          
+          cost,    
+          // scheduleItems,      
         } = request.body        
 
         const updateUserService = new UpdateUserService()
 
-        const updatedUser = updateUserService.execute({
+        await updateUserService.execute({
           id,
+          avatar,
           name,
           surname,
+          email,
           whatsapp,          
           bio,
           subject,
-          cost
-        })        
-        return response.status(200).json(updatedUser)
+          cost,
+          // scheduleItems
+        })                
+        
+        return response.status(200).json({
+          id,
+          avatar,
+          name,
+          surname,
+          email,
+          whatsapp,          
+          bio,
+          subject,
+          cost,
+        })
         
       } catch (error) {
 

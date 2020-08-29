@@ -1,4 +1,5 @@
 import db from '../database/connection'
+import convertHourToMinutes from '../utils/convertHourToMinutes'
 
 // interface UpdateUserProps{  
 //   id: number,
@@ -11,30 +12,40 @@ import db from '../database/connection'
 //   cost: string;  
 // }  
 
+interface ScheduleItemProps{
+  week_day: number;
+  from: string;
+  to: string;
+}
+
 export default class UpdateUserService{
 
   public async execute({  
     id,      
+    avatar,
     name,
     surname, 
+    email,
     whatsapp,
     bio,
     subject,
-    cost
+    cost,
+    // scheduleItems,
   }): Promise<any> {
 
   if(!name){
     throw new Error('You must inform at least your name')
   }
-
   
   const trx = await db.transaction()  
 
-  const updatedUsers = await trx('users').where({ id: id }).update({             
-      name,
-      surname,
-      whatsapp,
-      bio,
+  const updatedUsers = await trx('users').where({ id: id }).update({  
+    avatar,           
+    name,
+    surname,
+    email,
+    whatsapp,
+    bio,
   }).returning('id')  
   
   const user_id = updatedUsers[0]
@@ -45,17 +56,31 @@ export default class UpdateUserService{
     .returning('id')
 
   
-    if(!insertedClasses){
-      await trx('classes').insert({
-        subject,
-        cost,
-        user_id
-      })        
-    }
+  if(!insertedClasses){
+    await trx('classes').insert({
+      subject,
+      cost,
+      user_id
+    })        
+  }
 
-    if(updatedUsers || insertedClasses){
-      await trx.commit()
-      
+  // const class_id = insertedClasses[0]
+  // console.log(class_id)
+
+  // const newClassSchedule = scheduleItems.map((scheduleItem: ScheduleItemProps) => {
+  //   return {
+  //     class_id,
+  //     week_day: scheduleItem.week_day,
+  //     from: convertHourToMinutes(scheduleItem.from),
+  //     to: convertHourToMinutes(scheduleItem.to)
+  //   }
+  // })
+
+  // await trx('class_schedule').insert(newClassSchedule)
+
+  if(updatedUsers || insertedClasses){
+    await trx.commit()
+    
     } else {
       await trx.rollback()
     }
