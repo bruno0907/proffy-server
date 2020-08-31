@@ -28,6 +28,7 @@ routes.patch('/proffy/profile/update-avatar', upload.single('file'), avatarContr
 routes.put('/proffy/profile/:id/update', userController.update)
 
 routes.post('/proffy/password-recovery', passwordRecoveryController.index)
+routes.patch('/proffy/password-reset', passwordRecoveryController.update)
 
 routes.post('/proffy/classes', classesController.create)
 routes.get('/classes', classesController.index)

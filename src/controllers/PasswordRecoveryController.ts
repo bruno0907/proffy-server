@@ -1,8 +1,7 @@
 import { Request, Response} from 'express'
 
 import PasswordRecoveryService from '../services/PasswordRecoveryService'
-import sendEmail from '../utils/sendEmail'
-import SendmailTransport from 'nodemailer/lib/sendmail-transport'
+import PasswordResetService from '../services/PasswordResetService'
 
 export default class PasswordRecoveryController{
   public async index(request: Request, response: Response): Promise<Response>{    
@@ -13,18 +12,46 @@ export default class PasswordRecoveryController{
 
       const passwordRecoveryService = new PasswordRecoveryService()
 
-      const { name, email, newPassword } = await passwordRecoveryService.execute(userEmail)       
+      await passwordRecoveryService.execute(userEmail)       
 
-      sendEmail(name, email, newPassword)
+      
 
       return response.status(200).json({
-        message: 'User found!',  
+        message: 'Redefinition e-mail sent!',  
       })
 
     }catch(error){    
 
       return response.status(400).json({
-        message: 'Error while retrieving e-mail',
+        message: 'Error sending redefinition e-email',
+        error: error.message
+      })
+
+    }  
+  }
+
+  public async update(request: Request, response: Response): Promise<Response>{    
+      
+    const { email, password, password_confirm } = request.body             
+
+    if(password !== password_confirm)
+      response.status(400).json({
+        message: 'Passwords dont Match!'        
+      })
+
+    try{      
+
+      const passwordResetService = new PasswordResetService()
+      await passwordResetService.execute({ email, password, password_confirm})  
+
+      return response.status(200).json({
+        message: 'Password redefinition success!',         
+      })
+
+    }catch(error){    
+      
+      return response.status(400).json({
+        message: 'Error redefining the password',
         error: error.message
       })
 

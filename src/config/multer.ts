@@ -1,8 +1,7 @@
 import * as multer from 'multer'
 import path from 'path'
 
-const PATH = path.resolve(__dirname, '..', '..', 'uploads')
-
+const PATH = path.resolve('./uploads')
 
 module.exports = {
   storage: multer.diskStorage({

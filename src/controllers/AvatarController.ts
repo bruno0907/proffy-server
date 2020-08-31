@@ -9,21 +9,23 @@ export default class AvatarController{
     const { filename: avatar } = request.file
     const { id } = request.headers
           
-    const updateAvatarService = new UpdateAvatarService()
-    const user = await updateAvatarService.execute({
-      id,
-      avatar
-    })
-
-    if(user){   
+    try {
+      
+      const updateAvatarService = new UpdateAvatarService()
+      const [user] = await updateAvatarService.execute({
+        id,
+        avatar
+      })      
+      
       return response.status(201).json({ user })
 
-    } else {    
-      return response.status(400).json({      
-        message: 'An error has ocurried with the controller'           
-      })
+    } catch (error) {
 
-    }  
+      return response.status(400).json({      
+          message: 'An error has ocurried updating avatar',
+          error: error.message           
+      })
+    }
 
   }
 

@@ -12,26 +12,23 @@ export default class UpdateAvatarService{
   }){
 
     if(!id || !avatar){
-      throw new Error('Missing id or avatar on request')
-    }    
+      throw new Error('Missing id or avatar on request')       
+    }
 
     const user = await db<UpdateAvatarProps>('users')
-      .where({id})
-      .first()
-      
+      .where({ id })
+      .first()   
+
     if(!user){
-      throw new Error('User not found')
+      throw new Error('User not found')      
     } 
 
-    await db<UpdateAvatarProps>('users')
-      .where({id})
-      .update({avatar})         
-    
     const updatedUser = await db<UpdateAvatarProps>('users')
-      .where({id})
-      .first()
+      .where({ id })
+      .update({ avatar }, ['*'])
     
+    console.log(updatedUser)
     return updatedUser
 
-    }
+  }
 }
