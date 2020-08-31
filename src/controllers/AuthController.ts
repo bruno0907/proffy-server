@@ -19,9 +19,7 @@ export default class AuthController{
         password: userData.password,
         avatar: userData.avatar,
         whatsapp: userData.whatsapp,
-        bio: userData.bio,   
-        // subject: userData.subject,
-        // cost: userData.cost,     
+        bio: userData.bio,    
       }
 
       response.status(200).json({user, token})

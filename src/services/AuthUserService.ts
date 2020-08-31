@@ -18,14 +18,6 @@ interface UserResponseProps{
     avatar: string;
     whatsapp: string;
     bio: string;  
-    // subject: string;
-    // cost: string;
-    // classes: Array<{
-    //   subject: string;
-    //   cost: string;
-    //   from: string;
-    //   to: string;      
-    // }>
   };
   token: string;
 }
@@ -38,16 +30,16 @@ export default class AuthUserService{
     }    
       const userData = await db('users')
         .where('users.email', '=', email)
-        .first()
+        .first()        
 
     if(!userData){
-      throw new Error('Your email or password is wrong. Please verify your data and try again. If you dont have an account consider SignUp to us')
+      throw new Error('User not found. If you dont have an account consider SignUp to us')
     }
 
     const doesPasswordsMatch = await compare(password, userData.password)
 
     if(!doesPasswordsMatch){
-      throw new Error('Your email or password is wrong. Please verify your data and try again. If you dont have an account consider SignUp to us')
+      throw new Error('Your email/password is wrong. Please verify your data and try again. If you dont have an account consider SignUp to us')
     }
 
     const token = sign({}, process.env.SECRET_KEY, {

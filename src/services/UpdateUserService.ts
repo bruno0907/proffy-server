@@ -12,11 +12,11 @@ import convertHourToMinutes from '../utils/convertHourToMinutes'
 //   cost: string;  
 // }  
 
-interface ScheduleItemProps{
-  week_day: number;
-  from: string;
-  to: string;
-}
+// interface ScheduleItemProps{
+//   week_day: number;
+//   from: string;
+//   to: string;
+// }
 
 export default class UpdateUserService{
 
@@ -29,43 +29,34 @@ export default class UpdateUserService{
     whatsapp,
     bio,
     subject,
-    cost,
-    // scheduleItems,
+    cost,    
   }): Promise<any> {
-
-  if(!name){
-    throw new Error('You must inform at least your name')
-  }
   
   const trx = await db.transaction()  
 
-  const updatedUsers = await trx('users').where({ id: id }).update({  
-    avatar,           
-    name,
-    surname,
-    email,
-    whatsapp,
-    bio,
-  }).returning('id')  
+  const updatedUsers = await trx('users')
+    .where({ id })
+    .update({  
+      avatar,           
+      name,
+      surname,
+      email,
+      whatsapp,
+      bio,        
+    }).returning('id')  
   
   const user_id = updatedUsers[0]
 
   const insertedClasses = await trx('classes')
-    .where({ subject: subject, user_id: id})
-    .first()
-    .returning('id')
-
-  
-  if(!insertedClasses){
-    await trx('classes').insert({
+    .where({ subject, user_id})
+    .insert({
       subject,
       cost,
       user_id
-    })        
-  }
+    }).returning('id')      
 
-  // const class_id = insertedClasses[0]
-  // console.log(class_id)
+  const class_id = insertedClasses[0]
+  console.log(class_id)
 
   // const newClassSchedule = scheduleItems.map((scheduleItem: ScheduleItemProps) => {
   //   return {
@@ -76,7 +67,8 @@ export default class UpdateUserService{
   //   }
   // })
 
-  // await trx('class_schedule').insert(newClassSchedule)
+  // // await trx('class_schedule').insert(newClassSchedule)
+  // console.log(newClassSchedule)
 
   if(updatedUsers || insertedClasses){
     await trx.commit()

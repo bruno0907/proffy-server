@@ -46,8 +46,7 @@ export default class UserController {
           whatsapp,          
           bio,
           subject,
-          cost,    
-          // scheduleItems,      
+          cost,                   
         } = request.body        
 
         const updateUserService = new UpdateUserService()
@@ -61,8 +60,7 @@ export default class UserController {
           whatsapp,          
           bio,
           subject,
-          cost,
-          // scheduleItems
+          cost,          
         })                
         
         return response.status(200).json({
@@ -74,15 +72,13 @@ export default class UserController {
           whatsapp,          
           bio,
           subject,
-          cost,
+          cost,          
         })
         
       } catch (error) {
 
         return response.status(400).json({
-          message: 'This register cannot be updated.',
-          error: error.message
-
+          error: 'This register cannot be updated.',          
         })
       }
     }
