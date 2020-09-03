@@ -28,9 +28,9 @@ export default class UpdateUserService{
     email,
     whatsapp,
     bio,
-    subject,
-    cost,    
-  }): Promise<any> {
+    // subject,
+    // cost,    
+  }): Promise<any> {  
   
   const trx = await db.transaction()  
 
@@ -45,18 +45,18 @@ export default class UpdateUserService{
       bio,        
     }).returning('id')  
   
-  const user_id = updatedUsers[0]
+  // const user_id = updatedUsers[0]
 
-  const insertedClasses = await trx('classes')
-    .where({ subject, user_id})
-    .insert({
-      subject,
-      cost,
-      user_id
-    }).returning('id')      
+  // const insertedClasses = await trx('classes')
+  //   .where({ subject, user_id})
+  //   .insert({
+  //     subject,
+  //     cost,
+  //     user_id
+  //   }).returning('id')      
 
-  const class_id = insertedClasses[0]
-  console.log(class_id)
+  // const class_id = insertedClasses[0]
+  // console.log(class_id)
 
   // const newClassSchedule = scheduleItems.map((scheduleItem: ScheduleItemProps) => {
   //   return {
@@ -67,10 +67,10 @@ export default class UpdateUserService{
   //   }
   // })
 
-  // // await trx('class_schedule').insert(newClassSchedule)
+  // await trx('class_schedule').insert(newClassSchedule)
   // console.log(newClassSchedule)
 
-  if(updatedUsers || insertedClasses){
+  if(updatedUsers /*|| insertedClasses*/){
     await trx.commit()
     
     } else {

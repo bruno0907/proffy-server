@@ -5,81 +5,84 @@ import UpdateUserService from '../services/UpdateUserService'
 
 export default class UserController {
 
-    public async create(request: Request, response: Response){
-        try {
-          const {
-            name,
-            surname,
-            email,
-            password,
-            password_confirm
-          } = request.body
+  public async create(request: Request, response: Response){
+    
+    const {
+      name,
+      surname,
+      email,
+      password,
+      password_confirm
+    } = request.body
 
-          const createUserService = new CreateUserService()
+    try {
+      const createUserService = new CreateUserService()
 
-          const user = await createUserService.execute({
-            name,
-            surname,
-            email,
-            password,
-            password_confirm
-          })
+      const user = await createUserService.execute({
+        name,
+        surname,
+        email,
+        password,
+        password_confirm
+      })
 
-          return response.status(201).json(user)
-        } catch (error) {
-          return response.status(400).json({
-            message: 'An error has ocurried while creating a new user register',
-            error: error.message
-          })
-        }
+      return response.status(201).json(user)
+    } catch (error) {
+      return response.status(400).json({
+        message: 'An error has ocurried while creating a new user register',
+        error: error.message
+      })
     }
+  }
 
-    public async update(request: Request, response: Response) {
-      try {
+  public async update(request: Request, response: Response) {
+    
+    const {  
+      id,        
+      avatar,
+      name,
+      surname,
+      email,
+      whatsapp,          
+      bio,
+      // subject,
+      // cost,                   
+    } = request.body 
 
-        const {  
-          id,        
-          avatar,
-          name,
-          surname,
-          email,
-          whatsapp,          
-          bio,
-          subject,
-          cost,                   
-        } = request.body        
+    try {
 
-        const updateUserService = new UpdateUserService()
+      const updateUserService = new UpdateUserService()
 
-        await updateUserService.execute({
-          id,
-          avatar,
-          name,
-          surname,
-          email,
-          whatsapp,          
-          bio,
-          subject,
-          cost,          
-        })                
-        
-        return response.status(200).json({
-          id,
-          avatar,
-          name,
-          surname,
-          email,
-          whatsapp,          
-          bio,
-          subject,
-          cost,          
-        })
-        
-      } catch (error) {
+      await updateUserService.execute({
+        id,
+        avatar,
+        name,
+        surname,
+        email,
+        whatsapp,          
+        bio,
+        // subject,
+        // cost,          
+      })                
+      
+      return response.status(200).json({
+        id,
+        avatar,
+        name,
+        surname,
+        email,
+        whatsapp,          
+        bio,
+        // subject,
+        // cost,          
+      })
+      
+    } catch (error) {
 
-        return response.status(400).json({
-          error: 'This register cannot be updated.',          
-        })
-      }
+      return response.status(400).json({
+        message: 'This register cannot be updated.',  
+        error: error.message
+      })
     }
+  }
 }

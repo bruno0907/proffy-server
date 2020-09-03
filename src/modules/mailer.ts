@@ -7,11 +7,11 @@ function sendEmail(name: string, email: string, newPassword: string){
 
   // Config do client SMTP
   const transport = nodemailer.createTransport({
-    host: process.env.NM_HOST,
-    port: process.env.NM_PORT,
+    host: 'smtp.mailtrap.io',
+    port: 2525,
     auth: {
-      user: process.env.NM_USER,
-      pass: process.env.NM_PASS,
+      user: '9757190fb2f423',
+      pass: 'ce0d0a685a8138',
     },
   })
 
