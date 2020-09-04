@@ -2,17 +2,6 @@ import db from "../database/connection";
 
 export default class ListClassesService{
   public async execute():Promise<any>{
-    
-    // const classes = await db("classes")
-    //     .join("users", "classes.user_id", "=", "users.id")        
-    //     .join("class_schedule", "classes.id", "=", "class_schedule.class_id")
-    //     .select([
-    //       "classes.*", 
-    //       "users.*", 
-    //       "class_schedule.*"
-    //     ]);
-
-    // return classes
 
     const teachers = db('classes')
       .join('users', 'classes.user_id', 'users.id')

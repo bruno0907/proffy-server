@@ -1,9 +1,27 @@
 import { Request, Response } from 'express'
 
+import IndexUserService from '../services/IndexUserService'
 import CreateUserService from '../services/CreateUserService'
 import UpdateUserService from '../services/UpdateUserService'
 
 export default class UserController {
+
+  public async index(request: Request, response: Response){
+    try {
+      
+      const indexUserService = new IndexUserService()
+      const totalUsers = await indexUserService.execute()
+      const { total } = totalUsers[0]
+
+      return response.status(200).json(total)
+
+    } catch (error) {
+      return response.status(400).json({
+        error: error.message
+      })
+    }
+
+  }
 
   public async create(request: Request, response: Response){
     

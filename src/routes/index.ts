@@ -21,6 +21,7 @@ const connectionsController = new ConnectionsController()
 const avatarController = new AvatarController()
 const passwordRecoveryController = new PasswordRecoveryController()
 
+routes.get('/proffy', userController.index)
 routes.post('/proffy/sign-up', userController.create)
 routes.post('/proffy/sign-in', authController.login)
 
