@@ -9,22 +9,18 @@ export default class PasswordRecoveryController{
     const { email: userEmail } = request.body         
 
     try{
-
       const passwordRecoveryService = new PasswordRecoveryService()
-
-      await passwordRecoveryService.execute(userEmail)       
-
-      
+      await passwordRecoveryService.execute(userEmail)             
 
       return response.status(200).json({
         message: 'Redefinition e-mail sent!',  
+
       })
-
     }catch(error){    
-
       return response.status(400).json({
         message: 'Error sending redefinition e-email',
         error: error.message
+
       })
 
     }  
@@ -39,17 +35,15 @@ export default class PasswordRecoveryController{
         message: 'Passwords dont Match!'        
       })
 
-    try{      
-
+    try{     
       const passwordResetService = new PasswordResetService()
       await passwordResetService.execute({ email, password, password_confirm})  
 
       return response.status(200).json({
-        message: 'Password redefinition success!',         
-      })
+        message: 'Password redefinition success!',    
 
-    }catch(error){    
-      
+      })
+    }catch(error){          
       return response.status(400).json({
         message: 'Error redefining the password',
         error: error.message

@@ -26,13 +26,14 @@ routes.post('/proffy/sign-up', userController.create)
 routes.post('/proffy/sign-in', authController.login)
 
 routes.patch('/proffy/profile/update-avatar', upload.single('file'), avatarController.update)
-routes.put('/proffy/profile/:id/update', userController.update)
+routes.put('/proffy/profile/update', userController.update)
 
 routes.post('/proffy/password-recovery', passwordRecoveryController.index)
 routes.patch('/proffy/password-reset', passwordRecoveryController.update)
 
-routes.post('/proffy/:id/classes/', classesController.create)
-routes.get('/classes', classesController.index)
+routes.post('/proffy/classes/', classesController.create)
+routes.get('/classes', classesController.indexAll)
+routes.get('/proffy/classes/', classesController.index)
 
 routes.post('/connections', connectionsController.create)
 routes.get('/connections', connectionsController.index)

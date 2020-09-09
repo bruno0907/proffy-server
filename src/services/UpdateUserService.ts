@@ -1,22 +1,14 @@
 import db from '../database/connection'
-import convertHourToMinutes from '../utils/convertHourToMinutes'
 
-// interface UpdateUserProps{  
-//   id: number,
-//   name: string;
-//   avatar: string;
-//   surname: string;
-//   whatsapp: string;
-//   bio: string;
-//   subject: string;
-//   cost: string;  
-// }  
-
-// interface ScheduleItemProps{
-//   week_day: number;
-//   from: string;
-//   to: string;
-// }
+interface UpdateUserProps{  
+  id: number,
+  avatar: string;
+  name: string;
+  surname: string;
+  email: string;
+  whatsapp: string;
+  bio: string;
+}  
 
 export default class UpdateUserService{
 
@@ -27,14 +19,10 @@ export default class UpdateUserService{
     surname, 
     email,
     whatsapp,
-    bio,
-    // subject,
-    // cost,    
+    bio, 
   }): Promise<any> {  
-  
-  const trx = await db.transaction()  
 
-  const updatedUsers = await trx('users')
+  const updatedUsers = await db<UpdateUserProps>('users')
     .where({ id })
     .update({  
       avatar,           
@@ -43,38 +31,13 @@ export default class UpdateUserService{
       email,
       whatsapp,
       bio,        
-    }).returning('id')  
-  
-  // const user_id = updatedUsers[0]
+    }) 
 
-  // const insertedClasses = await trx('classes')
-  //   .where({ subject, user_id})
-  //   .insert({
-  //     subject,
-  //     cost,
-  //     user_id
-  //   }).returning('id')      
-
-  // const class_id = insertedClasses[0]
-  // console.log(class_id)
-
-  // const newClassSchedule = scheduleItems.map((scheduleItem: ScheduleItemProps) => {
-  //   return {
-  //     class_id,
-  //     week_day: scheduleItem.week_day,
-  //     from: convertHourToMinutes(scheduleItem.from),
-  //     to: convertHourToMinutes(scheduleItem.to)
-  //   }
-  // })
-
-  // await trx('class_schedule').insert(newClassSchedule)
-  // console.log(newClassSchedule)
-
-  if(updatedUsers /*|| insertedClasses*/){
-    await trx.commit()
+  if(updatedUsers){
+    return updatedUsers
     
     } else {
-      await trx.rollback()
+      throw new Error('An error has ocurried while updating the user')
     }
   }
 }

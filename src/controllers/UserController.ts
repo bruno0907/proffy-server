@@ -7,8 +7,7 @@ import UpdateUserService from '../services/UpdateUserService'
 export default class UserController {
 
   public async index(request: Request, response: Response){
-    try {
-      
+    try {      
       const indexUserService = new IndexUserService()
       const totalUsers = await indexUserService.execute()
       const { total } = totalUsers[0]
@@ -18,9 +17,9 @@ export default class UserController {
     } catch (error) {
       return response.status(400).json({
         error: error.message
+
       })
     }
-
   }
 
   public async create(request: Request, response: Response){
@@ -49,26 +48,24 @@ export default class UserController {
       return response.status(400).json({
         message: 'An error has ocurried while creating a new user register',
         error: error.message
+
       })
     }
   }
 
   public async update(request: Request, response: Response) {
     
-    const {  
-      id,        
+    const {        
       avatar,
       name,
       surname,
       email,
       whatsapp,          
-      bio,
-      // subject,
-      // cost,                   
+      bio,                  
     } = request.body 
+    const { id } = request.headers
 
     try {
-
       const updateUserService = new UpdateUserService()
 
       await updateUserService.execute({
@@ -78,9 +75,7 @@ export default class UserController {
         surname,
         email,
         whatsapp,          
-        bio,
-        // subject,
-        // cost,          
+        bio,       
       })                
       
       return response.status(200).json({
@@ -90,15 +85,13 @@ export default class UserController {
         surname,
         email,
         whatsapp,          
-        bio,
-        // subject,
-        // cost,          
+        bio,         
       })
       
     } catch (error) {
 
       return response.status(400).json({
-        message: 'This register cannot be updated.',  
+        message: 'Error updating user.',  
         error: error.message
       })
     }
