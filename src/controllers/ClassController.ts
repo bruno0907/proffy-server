@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 
-import RetrieveClassService from '../services/IndexClassService'
+import IndexClassService from '../services/IndexClassService'
 import UpdateClassService from '../services/UpdateClassService'
+import DeleteClassService from '../services/DeleteClassService'
 
 export default class ClassController {
   async index(request: Request, response: Response){
@@ -9,11 +10,11 @@ export default class ClassController {
     const { id } = request.headers
 
     try {
-      const retrieveClassService = new RetrieveClassService()
+      const indexClassService = new IndexClassService()
 
-      const userClass = await retrieveClassService.execute({ id })
+      const userClass = await indexClassService.execute({ id })
 
-      response.status(200).json(userClass)
+      response.status(200).json(userClass)      
 
     } catch (error) {
       response.status(400).json({
@@ -26,22 +27,19 @@ export default class ClassController {
   async update(request: Request, response: Response){
 
     const { id } = request.headers
-    const { 
-      subject,
-      cost,
-      schedule
-    } = request.body
+    const { cost, schedule } = request.body
 
     try {
       const updateClassService = new UpdateClassService()
 
-      const userClass = await updateClassService.execute({ 
-        id,
-        subject,
-        cost,
+      const data = await updateClassService.execute({ 
+        id,        
+        cost,        
         schedule
       })      
-      response.status(200).json(userClass)
+
+      // console.log(data)
+      response.status(200).json(data)
 
     } catch (error) {
       response.status(400).json({
@@ -49,5 +47,22 @@ export default class ClassController {
         error: error.message
       })
     }    
+  }
+
+  async delete(request: Request, response: Response){
+    const { id } = request.headers
+
+    try {
+      const deleteClassService = new DeleteClassService()
+      const data = await deleteClassService.execute({ id })
+      return response.status(200).json({data})
+
+    } catch (error) {
+      response.status(400).json({
+        message: 'A request error has ocurried',
+        error: error.message
+        
+      })
+    }
   }
 }

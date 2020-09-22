@@ -19,7 +19,7 @@ export default class ListClassesService{
       .groupBy(
         'classes.id', 
         'class_schedule.class_id'
-      )
+      )      
       
     return classes
   }

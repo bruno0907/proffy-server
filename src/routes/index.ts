@@ -6,10 +6,14 @@ import * as multerConfig from '../config/multer'
 
 import UserController from '../controllers/UserController'
 import AuthController from '../controllers/AuthController'
+
 import ClassesController from '../controllers/ClassesController'
 import ClassController from '../controllers/ClassController'
+
 import ConnectionsController from '../controllers/ConnectionsController'
+
 import AvatarController from '../controllers/AvatarController'
+
 import PasswordRecoveryController from '../controllers/PasswordRecoveryController'
 
 const routes = express.Router()
@@ -39,7 +43,8 @@ routes.get('/proffy/classes/', classesController.index)
 routes.get('/classes', classesController.indexAll)
 
 routes.get('/proffy/class/', classController.index)
-routes.post('/proffy/class/', classController.update)
+routes.put('/proffy/class/', classController.update)
+routes.delete('/proffy/class/remove-class', classController.delete)
 
 routes.post('/connections', connectionsController.create)
 routes.get('/connections', connectionsController.index)

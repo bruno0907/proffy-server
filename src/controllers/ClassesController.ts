@@ -49,7 +49,7 @@ export default class ClassesController {
       const createdClassService = new CreateClassesService();
 
       const newClass = await createdClassService.execute({
-        id,
+        id,        
         subject,
         cost,
         schedule,

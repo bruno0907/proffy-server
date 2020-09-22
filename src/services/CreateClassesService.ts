@@ -10,7 +10,7 @@ interface ScheduleItem {
 export default class CreateClassesService{
 
   public async execute({
-    id,
+    id,    
     subject,
     cost,
     schedule
@@ -18,7 +18,7 @@ export default class CreateClassesService{
 
       const trx = await db.transaction()
 
-      try {  
+      try {
         
         const insertedClassesId = await trx('classes').insert({
           subject,
@@ -37,7 +37,7 @@ export default class CreateClassesService{
             }
         })
 
-        await trx('class_schedule').insert(classSchedule)        
+        await trx('class_schedule').insert(classSchedule)
 
         await trx.commit()
 

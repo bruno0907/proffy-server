@@ -9,9 +9,10 @@ export default class RetrieveClassService{
       .join('classes', 'classes.id', 'class_schedule.class_id')
       .select('classes.*')
       .select(
-        db.raw('JSON_AGG(class_schedule.*) as classes')
-      )
-      .groupBy('classes.id')
+        db.raw('JSON_AGG(class_schedule.* ORDER BY class_schedule.week_day) as classes')
+      )        
+      .groupBy('classes.id')        
+        
 
       return response
   }
