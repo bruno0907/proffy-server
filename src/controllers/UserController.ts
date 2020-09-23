@@ -63,7 +63,7 @@ export default class UserController {
       whatsapp,          
       bio,                  
     } = request.body 
-    const { id } = request.headers
+    const { id } = request.params
 
     try {
       const updateUserService = new UpdateUserService()

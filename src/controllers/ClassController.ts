@@ -7,7 +7,7 @@ import DeleteClassService from '../services/DeleteClassService'
 export default class ClassController {
   async index(request: Request, response: Response){
 
-    const { id } = request.headers
+    const { id } = request.params
 
     try {
       const indexClassService = new IndexClassService()
@@ -26,7 +26,7 @@ export default class ClassController {
 
   async update(request: Request, response: Response){
 
-    const { id } = request.headers
+    const { id } = request.params
     const { cost, schedule } = request.body
 
     try {
@@ -50,7 +50,7 @@ export default class ClassController {
   }
 
   async delete(request: Request, response: Response){
-    const { id } = request.headers
+    const { id } = request.params
 
     try {
       const deleteClassService = new DeleteClassService()

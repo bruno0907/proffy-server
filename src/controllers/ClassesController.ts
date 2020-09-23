@@ -22,7 +22,7 @@ export default class ClassesController {
   }
 
   async index(request: Request, response: Response) {
-    const { id } = request.headers
+    const { id } = request.params
 
     try {    
        const indexUserClassesService = new IndexUserClassesService()       
@@ -39,7 +39,7 @@ export default class ClassesController {
 
   async create(request: Request, response: Response) {
     const { subject, cost, schedule } = request.body;
-    const { id } = request.headers;
+    const { id } = request.params;
 
     try {
       if (!id || !subject || !cost || !schedule) {

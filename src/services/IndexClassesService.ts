@@ -29,7 +29,7 @@ export default class ListClassesService{
         'users.whatsapp'
       )  
       .select(
-        db.raw('JSON_AGG(class_schedule.*) as classes')
+        db.raw('JSON_AGG(class_schedule.* ORDER BY class_schedule.week_day) as classes')
       )
       .groupBy(
         'classes.id', 

@@ -7,7 +7,7 @@ export default class AvatarController{
   async update(request: Request, response: Response){
     
     const { filename: avatar } = request.file
-    const { id } = request.headers
+    const { id } = request.params
           
     try {
       

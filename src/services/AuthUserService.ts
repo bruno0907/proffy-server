@@ -26,20 +26,20 @@ export default class AuthUserService{
   public async execute({ email, password }: UserAuthProps): Promise<UserResponseProps>{
     
     if(!email && !password){
-      throw new Error('You must inform your e-mail and/or your password to SignIn')      
+      throw new Error('Email and/or password fields are empty')      
     }    
       const userData = await db('users')
         .where('users.email', '=', email)
         .first()        
 
     if(!userData){
-      throw new Error('User not found. If you dont have an account consider SignUp to us')
+      throw new Error('User not found')
     }
 
     const doesPasswordsMatch = await compare(password, userData.password)
 
     if(!doesPasswordsMatch){
-      throw new Error('Your email/password is wrong. Please verify your data and try again. If you dont have an account consider SignUp to us')
+      throw new Error('Passwords dont match')
     }
 
     const token = sign({}, process.env.SECRET_KEY, {

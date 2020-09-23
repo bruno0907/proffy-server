@@ -1,9 +1,6 @@
-import { text } from 'express'
 import db from '../database/connection'
 
-import convertHourToMinutes from '../utils/convertHourToMinutes'
-
-interface ScheduleItem {
+interface ScheduleItemProps {
   id: number;
   week_day: number;
   from: string;
@@ -28,10 +25,10 @@ export default class UpdateClassService{
         .where({ class_id })
 
       if(!scheduledClasses){
-        return console.log('Nenhuma aula cadastrada')
+        throw new Error('No classes were found.')
       }      
 
-      const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {   
+      const classSchedule = schedule.map((scheduleItem: ScheduleItemProps) => {   
         return {
           id: scheduleItem.id,
           week_day: Number(scheduleItem.week_day),
@@ -44,37 +41,38 @@ export default class UpdateClassService{
       let classesToAdd = []
       let classesToUpdate = []
   
-      classSchedule.map((schedule: ScheduleItem) => {
+      classSchedule.map((schedule: ScheduleItemProps) => {
         if(!Number.isInteger(schedule.id)){          
           classesToAdd.push(schedule)
         } else {          
           classesToUpdate.push(schedule)
         }
       })
-
+      
       if(classesToAdd.length > 0){
-        const classSchedule = classesToAdd.map((scheduleItem: ScheduleItem) => {   
+        const classSchedule = classesToAdd.map((scheduleItem: ScheduleItemProps) => {   
           return {
-              class_id,
-              week_day: scheduleItem.week_day,
-              from: scheduleItem.from,
-              to: scheduleItem.to
+            class_id,
+            week_day: scheduleItem.week_day,
+            from: scheduleItem.from,
+            to: scheduleItem.to
           }
       })
-
+      
       await trx('class_schedule').insert(classSchedule)
       }
 
-      classesToUpdate.map(async (scheduleItem: ScheduleItem) => {   
+      for(let i = 0; i < classesToUpdate.length; i++){
+        let { id, week_day, from, to } = classesToUpdate[i]
+
         await trx('class_schedule')
-          .where('class_schedule.id', '=', scheduleItem.id)
+          .where({ id })
           .update({
-            'class_schedule.week_day': scheduleItem.week_day,
-            'class_schedule.from': scheduleItem.from,
-            'class_schedule.to': scheduleItem.to
+            week_day,
+            from,
+            to
           })
-        
-      })
+      }
 
       await trx.commit()
 

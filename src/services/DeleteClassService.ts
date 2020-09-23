@@ -1,19 +1,22 @@
 import db from '../database/connection'
 
+interface ClassProps{
+  id: number;
+}
+
 export default class DeleteClassService{
-  public async execute({ id }){
+  public async execute({ id }: ClassProps){
 
-    const data = await db('class_schedule')
-      .where({ id })
-      .delete()      
+    try {
 
-    if(data){      
-      return {
-        status: 'OK',
-        code: '200'
-      }
-    } else {
-      throw new Error('Id not found')
+      await db('class_schedule')
+        .where({ id })
+        .delete() 
+
+    } catch (error) {
+
+      throw new Error('Cannot delete class')
+
     }
 
   }
