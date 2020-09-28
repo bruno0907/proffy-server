@@ -17,30 +17,30 @@ export default class CreateClassesService{
 
     const trx = await db.transaction()
 
-    try {
+    try {  
       
-      const insertedClassesId = await trx('classes').insert({
-        subject,
-        cost,
-        user_id: id
-      }).returning('id')
+       const insertedClassesId = await trx('classes').insert({
+         subject,
+         cost,
+         user_id: id
+       }).returning('id')
 
-      const class_id = insertedClassesId[0]
+       const class_id = insertedClassesId[0]
 
-      const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {   
-        return {
-          class_id,
-          week_day: scheduleItem.week_day,
-          from: convertHourToMinutes(scheduleItem.from),
-          to: convertHourToMinutes(scheduleItem.to)
-        }
-      })
+       const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {   
+         return {
+           class_id,
+           week_day: scheduleItem.week_day,
+           from: convertHourToMinutes(scheduleItem.from),
+           to: convertHourToMinutes(scheduleItem.to)
+         }
+       })
 
-      await trx('class_schedule').insert(classSchedule)
+       await trx('class_schedule').insert(classSchedule)
 
-      await trx.commit()
+       await trx.commit()
 
-      return 
+       return 
       
     } catch (error) {
 
