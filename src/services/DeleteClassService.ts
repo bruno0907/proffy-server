@@ -1,7 +1,7 @@
 import db from '../database/connection'
 
 interface ClassProps{
-  id: number;
+  id: string;
 }
 
 export default class DeleteClassService{

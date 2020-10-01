@@ -1,7 +1,7 @@
 import db from '../database/connection'
 
 interface UpdateAvatarProps{
-  id: number;
+  id: string;
   avatar: string;
 }
 
