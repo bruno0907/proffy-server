@@ -10,9 +10,7 @@ interface ScheduleItemProps {
 
 export default class UpdateClassService{
   public async execute({ id, cost, schedule }){
-
     const trx = await db.transaction()
-
     try {
       const updatedClassCost = await trx('classes')
       .where({ id })
@@ -20,14 +18,12 @@ export default class UpdateClassService{
       .returning('id')
 
       const class_id = updatedClassCost[0]
-
       const scheduledClasses = await trx('class_schedule')
         .where({ class_id })
 
       if(!scheduledClasses){
         throw new Error('No classes were found.')
       }      
-
       const classSchedule = schedule.map((scheduleItem: ScheduleItemProps) => {   
         return {
           id: scheduleItem.id,
@@ -75,7 +71,6 @@ export default class UpdateClassService{
       }
 
       await trx.commit()
-
       return
 
     } catch (error) {

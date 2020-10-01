@@ -23,14 +23,13 @@ interface UserResponseProps{
 }
 
 export default class AuthUserService{
-  public async execute({ email, password }: UserAuthProps): Promise<UserResponseProps>{
-    
+  public async execute({ email, password }: UserAuthProps): Promise<UserResponseProps>{    
     if(!email && !password){
       throw new Error('Email and/or password fields are empty')      
     }    
       const userData = await db('users')
         .where('users.email', '=', email)
-        .first()        
+        .first()      
 
     if(!userData){
       throw new Error('User not found')

@@ -1,5 +1,4 @@
 import db from '../database/connection'
-
 import { hash } from 'bcryptjs'
 
 interface CreateUserProps{
@@ -11,7 +10,6 @@ interface CreateUserProps{
 }
 
 export default class CreateUserService{
-
   public async execute({
     name,
     surname,
@@ -19,35 +17,27 @@ export default class CreateUserService{
     password,
     password_confirm
   }: CreateUserProps): Promise<any> {
-
     try {
       if(!name || !email || !password || !password_confirm){
         throw new Error('All fields are required')
-      }
-  
+      }  
       if(password !== password_confirm){
         throw new Error('Passwords dont match!')
-      }
-  
+      }  
       const emailExists = await db('users')
         .where('users.email', '=', email)
-        .first()
-  
+        .first()  
       if(emailExists){
         throw new Error('The email you provided is already in use')
-      }
-  
-      const hashedPassword = await hash(password, 8)
-  
+      }  
+      const hashedPassword = await hash(password, 8)  
       const createUser = await db('users').insert({
         name,
         surname,
         email,
         password: hashedPassword
       })
-
       return createUser
-
     } catch (error) {
       throw new Error('Cannot register new user')      
     }    

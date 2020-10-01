@@ -2,7 +2,6 @@ import db from "../database/connection";
 
 export default class ListClassesService{
   public async execute({ id }):Promise<any>{
-
     const classes = db('classes')
       .where('user_id', '=', id)
       .join(
@@ -19,8 +18,7 @@ export default class ListClassesService{
       .groupBy(
         'classes.id', 
         'class_schedule.class_id'
-      )      
-      
+      )  
     return classes
   }
 }

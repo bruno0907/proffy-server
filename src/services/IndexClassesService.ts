@@ -34,8 +34,7 @@ export default class ListClassesService{
       .groupBy(
         'classes.id', 
         'users.id'
-      )
-      
+      )      
       return teachers
   }
 }

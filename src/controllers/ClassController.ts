@@ -6,16 +6,11 @@ import DeleteClassService from '../services/DeleteClassService'
 
 export default class ClassController {
   async index(request: Request, response: Response){
-
     const { id } = request.params
-
     try {
       const indexClassService = new IndexClassService()
-
       const userClass = await indexClassService.execute({ id })
-
-      response.status(200).json(userClass)      
-
+      response.status(200).json(userClass)  
     } catch (error) {
       response.status(400).json({
         message: 'An error has ocurried',
@@ -25,22 +20,16 @@ export default class ClassController {
   }
 
   async update(request: Request, response: Response){
-
     const { id } = request.params
     const { cost, schedule } = request.body
-
     try {
       const updateClassService = new UpdateClassService()
-
       const data = await updateClassService.execute({ 
         id,        
         cost,        
         schedule
       })      
-
-      // console.log(data)
       response.status(200).json(data)
-
     } catch (error) {
       response.status(400).json({
         message: 'An error has ocurried',

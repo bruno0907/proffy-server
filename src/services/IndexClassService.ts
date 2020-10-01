@@ -2,7 +2,6 @@ import db from "../database/connection";
 
 export default class RetrieveClassService{
   public async execute({ id }){
-
     const response = 
       db('class_schedule')
       .where('class_schedule.class_id', '=', id)  
@@ -11,9 +10,7 @@ export default class RetrieveClassService{
       .select(
         db.raw('JSON_AGG(class_schedule.* ORDER BY class_schedule.week_day) as classes')
       )        
-      .groupBy('classes.id')        
-        
-
+      .groupBy('classes.id')  
       return response
   }
 }

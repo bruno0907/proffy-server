@@ -11,7 +11,6 @@ interface UpdateUserProps{
 }  
 
 export default class UpdateUserService{
-
   public async execute({  
     id,      
     avatar,
@@ -21,7 +20,6 @@ export default class UpdateUserService{
     whatsapp,
     bio, 
   }): Promise<any> {  
-
   const updatedUsers = await db<UpdateUserProps>('users')
     .where({ id })
     .update({  
@@ -34,8 +32,7 @@ export default class UpdateUserService{
     }) 
 
   if(updatedUsers){
-    return updatedUsers
-    
+    return updatedUsers    
     } else {
       throw new Error('An error has ocurried while updating the user')
     }
