@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server.js",
     "dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "knex:migrate": "knex --knexfile dist/knexfile.js migrate:latest",
-    "knex:migrate:rollback": "knex --knexfile dist/knextfile.js migrate:rollback"
+    "knex:rollback": "knex --knexfile dist/knexfile.js migrate:rollback",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
