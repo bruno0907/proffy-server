@@ -18,7 +18,7 @@ export default class AuthController{
         whatsapp: userData.whatsapp,
         bio: userData.bio,    
       }
-      response.status(200).json({user, token})
+      return response.status(200).json({user, token})
     } catch (error) {
       return response.status(400).json({
         message: 'Something wrong is not right!',
